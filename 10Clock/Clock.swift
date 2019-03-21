@@ -32,7 +32,9 @@ open class TenClock : UIControl{
     //overall inset. Controls all sizes.
     @IBInspectable var insetAmount: CGFloat = 40
     var internalShift: CGFloat = 5;
-    var pathWidth:CGFloat = 54
+    open var pathWidth:CGFloat = 54
+    private var imageTailLayer: CALayer?
+    private var imageHeadLayer: CALayer?
 
     var timeStepSize: CGFloat = 5
     let gradientLayer = CAGradientLayer()
@@ -93,6 +95,8 @@ open class TenClock : UIControl{
     open var shouldMoveHead = true
     open var shouldMoveTail = true
     open var shouldMoveOnlyDuration = false
+    open var shouldShowTicks = true
+    open var shouldHaveGradient = true
     
     open var numeralsColor:UIColor? = UIColor.darkGray
     open var minorTicksColor:UIColor? = UIColor.lightGray
@@ -191,7 +195,6 @@ open class TenClock : UIControl{
         }
     }
 
-
     // input a date, output: 0 to 4pi
     func timeToAngle(_ date: Date) -> Angle{
         let units : Set<Calendar.Component> = [.hour, .minute]
@@ -208,10 +211,12 @@ open class TenClock : UIControl{
         let startOfToday = Calendar.current.startOfDay(for: Date())
         return self.calendar.date(byAdding: .minute, value: Int(medStepFunction(min, stepSize: 5/* minute steps*/)), to: startOfToday)!
     }
+    
     override open func prepareForInterfaceBuilder() {
         super.prepareForInterfaceBuilder()
         update()
     }
+    
     open func update() {
         let mm = min(self.layer.bounds.size.height, self.layer.bounds.size.width)
         CATransaction.begin()
@@ -241,17 +246,22 @@ open class TenClock : UIControl{
         updateWatchFaceNumerals()
         updateWatchFaceTitle()
         CATransaction.commit()
-
     }
+    
     func updateGradientLayer() {
-
-        gradientLayer.colors =
-            [tintColor,
-                tintColor.modified(withAdditionalHue: -0.08, additionalSaturation: 0.15, additionalBrightness: 0.2)]
-                .map(disabledFormattedColor)
-                .map{$0.cgColor}
-        gradientLayer.mask = overallPathLayer
-        gradientLayer.startPoint = CGPoint(x:0,y:0)
+        if shouldHaveGradient {
+            gradientLayer.colors =
+                [tintColor,
+                 tintColor.modified(withAdditionalHue: -0.08, additionalSaturation: 0.15, additionalBrightness: 0.2)]
+                    .map(disabledFormattedColor)
+                    .map{$0.cgColor}
+            gradientLayer.mask = overallPathLayer
+            gradientLayer.startPoint = CGPoint(x:0,y:0)
+        } else {
+            gradientLayer.colors = [tintColor, tintColor].map(disabledFormattedColor).map{$0.cgColor}
+            gradientLayer.mask = overallPathLayer
+            gradientLayer.startPoint = CGPoint(x:0,y:0)
+        }
     }
 
     func updateTrackLayerPath() {
@@ -262,11 +272,12 @@ open class TenClock : UIControl{
                     height: trackLayer.size.width)))
         trackLayer.lineWidth = pathWidth
         trackLayer.path = circle.cgPath
-
     }
+    
     override open func layoutSubviews() {
         update()
     }
+    
     func updatePathLayerPath() {
         let arcCenter = pathLayer.center
         pathLayer.fillColor = UIColor.clear.cgColor
@@ -279,7 +290,6 @@ open class TenClock : UIControl{
             endAngle: ( twoPi ) -  headAngle,
             clockwise: true).cgPath
     }
-
 
     func tlabel(_ str:String, color:UIColor? = nil) -> CATextLayer{
         let f = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
@@ -295,6 +305,7 @@ open class TenClock : UIControl{
 
         return l
     }
+    
     func updateHeadTailLayers() {
         let size = CGSize(width: 2 * buttonRadius, height: 2 * buttonRadius)
         let iSize = CGSize(width: 2 * iButtonRadius, height: 2 * iButtonRadius)
@@ -322,10 +333,36 @@ open class TenClock : UIControl{
         let endText = tlabel(tailText, color: disabledFormattedColor(tailTextColor))
         stText.position = topTailLayer.center
         endText.position = topHeadLayer.center
+        
         topHeadLayer.addSublayer(endText)
         topTailLayer.addSublayer(stText)
+        
+        if imageTailLayer != nil {
+            imageTailLayer!.position = topTailLayer.center
+            topTailLayer.addSublayer(imageTailLayer!)
+        }
+        
+        if imageHeadLayer != nil {
+            imageHeadLayer!.position = topHeadLayer.center
+            topHeadLayer.addSublayer(imageHeadLayer!)
+        }
     }
-
+    
+    public func setTopTailImage(image: UIImageView) {
+        imageTailLayer = CALayer()
+        imageTailLayer!.backgroundColor = UIColor.clear.cgColor
+        imageTailLayer!.bounds = CGRect(x: 0, y: 0, width: image.bounds.width, height: image.bounds.height)
+        imageTailLayer!.position = topTailLayer.center
+        imageTailLayer!.contents = image.image!.cgImage
+    }
+    
+    public func setTopHeadImage(image: UIImageView) {
+        imageHeadLayer = CALayer()
+        imageHeadLayer!.backgroundColor = UIColor.clear.cgColor
+        imageHeadLayer!.bounds = CGRect(x: 0, y: 0, width: image.bounds.width, height: image.bounds.height)
+        imageHeadLayer!.position = topHeadLayer.center
+        imageHeadLayer!.contents = image.image!.cgImage
+    }
 
     func updateWatchFaceNumerals() {
         numeralsLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
@@ -366,7 +403,7 @@ open class TenClock : UIControl{
             fiveMinIncrements += (24 * (60/5))
         }
         
-        titleTextLayer.string = "\(fiveMinIncrements / 12)hr \((fiveMinIncrements % 12) * 5)min"
+        titleTextLayer.string = String.init(format: "%dh%02d", fiveMinIncrements / 12, (fiveMinIncrements % 12) * 5)
         titleTextLayer.position = gradientLayer.center
 
     }
@@ -381,22 +418,27 @@ open class TenClock : UIControl{
     }
 
     func updateWatchFaceTicks() {
-        repLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
-        let t = tick()
-        t.strokeColor = disabledFormattedColor(minorTicksColor ?? tintColor).cgColor
-        t.position = CGPoint(x: repLayer.bounds.midX, y: 10)
-        repLayer.addSublayer(t)
-        repLayer.position = self.bounds.center
-        repLayer.bounds.size = self.internalInset.size
+        if shouldShowTicks {
+            repLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
+            let t = tick()
+            t.strokeColor = disabledFormattedColor(minorTicksColor ?? tintColor).cgColor
+            t.position = CGPoint(x: repLayer.bounds.midX, y: 10)
+            repLayer.addSublayer(t)
+            repLayer.position = self.bounds.center
+            repLayer.bounds.size = self.internalInset.size
 
-        repLayer2.sublayers?.forEach({$0.removeFromSuperlayer()})
-        let t2 = tick()
-        t2.strokeColor = disabledFormattedColor(majorTicksColor ?? tintColor).cgColor
-        t2.lineWidth = 2
-        t2.position = CGPoint(x: repLayer2.bounds.midX, y: 10)
-        repLayer2.addSublayer(t2)
-        repLayer2.position = self.bounds.center
-        repLayer2.bounds.size = self.internalInset.size
+            repLayer2.sublayers?.forEach({$0.removeFromSuperlayer()})
+            let t2 = tick()
+            t2.strokeColor = disabledFormattedColor(majorTicksColor ?? tintColor).cgColor
+            t2.lineWidth = 2
+            t2.position = CGPoint(x: repLayer2.bounds.midX, y: 10)
+            repLayer2.addSublayer(t2)
+            repLayer2.position = self.bounds.center
+            repLayer2.bounds.size = self.internalInset.size
+        } else {
+            repLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
+            repLayer2.sublayers?.forEach({$0.removeFromSuperlayer()})
+        }
     }
     var pointerLength:CGFloat = 0.0
 
@@ -412,8 +454,8 @@ open class TenClock : UIControl{
         overallPathLayer.addSublayer(titleTextLayer)
         layer.addSublayer(overallPathLayer)
         layer.addSublayer(gradientLayer)
-        gradientLayer.addSublayer(topHeadLayer)
-        gradientLayer.addSublayer(topTailLayer)
+        layer.addSublayer(topHeadLayer)
+        layer.addSublayer(topTailLayer)
         update()
         strokeColor = disabledFormattedColor(tintColor)
     }

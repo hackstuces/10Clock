@@ -93,6 +93,14 @@ class ViewController: UITableViewController, TenClockDelegate {
         
         clock.startDate = Date()
         clock.endDate = Date().addingTimeInterval(-60 * 60 * 8 )
+        clock.shouldShowTicks = false
+        clock.shouldHaveGradient = false
+        clock.pathWidth = 30.0
+        let tailImage = UIImageView.init(image: UIImage.init(named: "btnMoon"))
+        tailImage.frame = CGRect(x: 0, y: 0, width: 81, height: 81)
+        clock.tintColor = UIColor.init(red: 0.48, green: 0.44, blue: 0.65, alpha: 1.0)
+        clock.setTopTailImage(image: tailImage)
+        clock.setTopHeadImage(image: tailImage)
         clock.update()
         clock.delegate = self
     }

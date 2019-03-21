@@ -20,8 +20,8 @@
 		D8F6E8211D7745B800E29842 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6E8201D7745B800E29842 /* AppDelegate.swift */; };
 		D8F6E8231D7745B800E29842 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F6E8221D7745B800E29842 /* ViewController.swift */; };
 		D8F6E8261D7745B800E29842 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8F6E8241D7745B800E29842 /* Main.storyboard */; };
-		D8F6E8281D7745B800E29842 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8F6E8271D7745B800E29842 /* Assets.xcassets */; };
 		D8F6E82B1D7745B800E29842 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8F6E8291D7745B800E29842 /* LaunchScreen.storyboard */; };
+		FC3EAC392244030B00C71DA7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FC3EAC382244030B00C71DA7 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,9 +72,9 @@
 		D8F6E8201D7745B800E29842 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D8F6E8221D7745B800E29842 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D8F6E8251D7745B800E29842 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		D8F6E8271D7745B800E29842 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8F6E82A1D7745B800E29842 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		D8F6E82C1D7745B800E29842 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FC3EAC382244030B00C71DA7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,10 +158,10 @@
 		D8F6E81F1D7745B800E29842 /* SwiftClock */ = {
 			isa = PBXGroup;
 			children = (
+				FC3EAC382244030B00C71DA7 /* Assets.xcassets */,
 				D8F6E8201D7745B800E29842 /* AppDelegate.swift */,
 				D8F6E8221D7745B800E29842 /* ViewController.swift */,
 				D8F6E8241D7745B800E29842 /* Main.storyboard */,
-				D8F6E8271D7745B800E29842 /* Assets.xcassets */,
 				D8F6E8291D7745B800E29842 /* LaunchScreen.storyboard */,
 				D8F6E82C1D7745B800E29842 /* Info.plist */,
 			);
@@ -257,7 +257,7 @@
 					};
 					D8F6E81C1D7745B800E29842 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = 55WZH7L5M4;
+						DevelopmentTeam = 6S87W7XCHS;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -302,7 +302,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8F6E82B1D7745B800E29842 /* LaunchScreen.storyboard in Resources */,
-				D8F6E8281D7745B800E29842 /* Assets.xcassets in Resources */,
+				FC3EAC392244030B00C71DA7 /* Assets.xcassets in Resources */,
 				D8F6E8261D7745B800E29842 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -536,7 +536,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 55WZH7L5M4;
+				DEVELOPMENT_TEAM = 6S87W7XCHS;
 				INFOPLIST_FILE = SwiftClock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JD.SwiftClock;
@@ -550,7 +550,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				DEVELOPMENT_TEAM = 55WZH7L5M4;
+				DEVELOPMENT_TEAM = 6S87W7XCHS;
 				INFOPLIST_FILE = SwiftClock/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = JD.SwiftClock;
