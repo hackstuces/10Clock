@@ -92,7 +92,7 @@ open class TenClock : UIControl{
 
     open var shouldMoveHead = true
     open var shouldMoveTail = true
-    
+    open var shouldMoveOnlyDuration = false
     
     open var numeralsColor:UIColor? = UIColor.darkGray
     open var minorTicksColor:UIColor? = UIColor.lightGray
@@ -509,7 +509,7 @@ open class TenClock : UIControl{
                     pointMover = nil
             }
         case pathLayer:
-            if (shouldMoveHead) {
+            if (shouldMoveHead || shouldMoveOnlyDuration) {
             		pointMover = pointerMoverProducer({ pt in
                 		let x = CGVector(from: self.bounds.center,
                 		                 to:CGPoint(x: prev.x, y: self.layer.bounds.height - prev.y)).theta;
