@@ -99,6 +99,7 @@ class ViewController: UITableViewController, TenClockDelegate {
         clock.centerTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
         clock.numeralsTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
         clock.cardinalsColor = UIColor.green
+        clock.trackColor = UIColor(red: 0.08, green: 0.06, blue: 0.23, alpha: 1)
 //        let tailImage = UIImageView.init(image: UIImage.init(named: "btnMoon"))
 //        tailImage.frame = CGRect(x: 0, y: 0, width: 81, height: 81)
 //        clock.tintColor = UIColor.init(red: 0.48, green: 0.44, blue: 0.65, alpha: 1.0)

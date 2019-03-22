@@ -105,6 +105,7 @@ open class TenClock : UIControl{
     open var minorTicksColor:UIColor? = UIColor.lightGray
     open var majorTicksColor:UIColor? = UIColor.blue
     open var centerTextColor:UIColor? = UIColor.darkGray
+    open var trackColor:UIColor? = UIColor.darkGray
 
     open var titleColor = UIColor.lightGray
     open var titleGradientMask = false
@@ -193,7 +194,6 @@ open class TenClock : UIControl{
             return UIColor(cgColor: trackLayer.strokeColor!)
         }
         set(strokeColor) {
-            trackLayer.strokeColor = strokeColor.withAlphaComponent(0.1).cgColor
             pathLayer.strokeColor = strokeColor.cgColor
         }
     }
@@ -275,6 +275,7 @@ open class TenClock : UIControl{
                     height: trackLayer.size.width)))
         trackLayer.lineWidth = pathWidth
         trackLayer.path = circle.cgPath
+        trackLayer.strokeColor = trackColor!.cgColor
     }
     
     override open func layoutSubviews() {
