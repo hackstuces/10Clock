@@ -454,7 +454,7 @@ open class TenClock : UIControl{
         overallPathLayer.addSublayer(pathLayer)
         overallPathLayer.addSublayer(headLayer)
         overallPathLayer.addSublayer(tailLayer)
-        overallPathLayer.addSublayer(titleTextLayer)
+        layer.addSublayer(titleTextLayer)
         layer.addSublayer(overallPathLayer)
         layer.addSublayer(gradientLayer)
         layer.addSublayer(topHeadLayer)

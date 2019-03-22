@@ -96,6 +96,7 @@ class ViewController: UITableViewController, TenClockDelegate {
         clock.shouldShowTicks = false
         clock.shouldHaveGradient = false
         clock.pathWidth = 30.0
+        clock.centerTextColor = UIColor.red
         clock.centerTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
         clock.numeralsTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
         clock.cardinalsColor = UIColor.green
