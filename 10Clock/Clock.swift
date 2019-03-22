@@ -72,21 +72,21 @@ open class TenClock : UIControl{
     let fourPi =  CGFloat(4 * M_PI)
     var headAngle: CGFloat = 0{
         didSet{
-            if (headAngle > fourPi  +  CGFloat(M_PI_2)){
-                headAngle -= fourPi
+            if (headAngle > twoPi  +  CGFloat(M_PI_2)){
+                headAngle -= twoPi
             }
             if (headAngle <  CGFloat(M_PI_2) ){
-                headAngle += fourPi
+                headAngle += twoPi
             }
         }
     }
 
     var tailAngle: CGFloat = 0.7 * CGFloat(M_PI) {
         didSet{
-            if (tailAngle  > headAngle + fourPi){
-                tailAngle -= fourPi
+            if (tailAngle  > headAngle + twoPi){
+                tailAngle -= twoPi
             } else if (tailAngle  < headAngle ){
-                tailAngle += fourPi
+                tailAngle += twoPi
             }
 
         }
@@ -211,7 +211,7 @@ open class TenClock : UIControl{
     // input an angle, output: 0 to 4pi
     func angleToTime(_ angle: Angle) -> Date{
         let dAngle = Double(angle)
-        let min = CGFloat(((M_PI_2 - dAngle) / (2 * M_PI)) * (12 * 60))
+        let min = CGFloat(((M_PI - dAngle) / (2 * M_PI)) * (12 * 60))
         let startOfToday = Calendar.current.startOfDay(for: Date())
         return self.calendar.date(byAdding: .minute, value: Int(medStepFunction(min, stepSize: 5/* minute steps*/)), to: startOfToday)!
     }
@@ -378,7 +378,7 @@ open class TenClock : UIControl{
         for i in (1 ... 12){
             let cgFont = (i == 12 || i == 3 || i == 6 || i == 9) ? CTFontCreateWithName(cardinalsTextFont.fontName as CFString?, cardinalsTextFont.pointSize/2,nil) : CTFontCreateWithName(numeralsTextFont.fontName as CFString?, numeralsTextFont.pointSize/2,nil)
             let l = CATextLayer()
-            l.bounds.size = CGSize(width: i > 9 ? 18 : 8, height: (i == 12 || i == 3 || i == 6 || i == 9) ? 17 : 15)
+            l.bounds.size = (i == 12 || i == 3 || i == 6 || i == 9) ? CGSize(width: i > 9 ? 20 : 18, height: 18) : CGSize(width: i > 9 ? 18 : 8, height: 15)
             l.fontSize = (i == 12 || i == 3 || i == 6 || i == 9) ? cardinalsTextFont.pointSize : numeralsTextFont.pointSize
             l.alignmentMode = kCAAlignmentCenter
             l.contentsScale = UIScreen.main.scale
@@ -407,7 +407,15 @@ open class TenClock : UIControl{
             fiveMinIncrements += (24 * (60/5))
         }
         
-        titleTextLayer.string = String.init(format: "%dh%02d", fiveMinIncrements / 12, (fiveMinIncrements % 12) * 5)
+        var hours = fiveMinIncrements / 12
+        var minutes = ((fiveMinIncrements % 12) * 5) + 5
+        
+        if minutes >= 60 {
+            hours += 1
+            minutes = 0
+        }
+        
+        titleTextLayer.string = String.init(format: "%dh%02d", hours, minutes)
         titleTextLayer.position = gradientLayer.center
 
     }
