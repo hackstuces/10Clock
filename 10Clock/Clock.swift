@@ -522,7 +522,7 @@ open class TenClock : UIControl{
         		pointMover = nil
             return
         }
-        
+
         //        touches.forEach { (touch) in
         let touch = touches.first!
         let pointOfTouch = touch.location(in: self)
@@ -542,8 +542,10 @@ open class TenClock : UIControl{
                 let computedP = CGPoint(x: p.x, y: self.layer.bounds.height - p.y)
                 let v1 = CGVector(from: c, to: computedP)
                 let v2 = CGVector(angle:g( p ))
-
                 s(clockDescretization(CGVector.signedTheta(v1, vec2: v2)))
+                if abs(self.headAngle - self.tailAngle) < CGFloat(2 * M_PI / 12.0) {
+                    return
+                }
                 self.update()
             }
 
@@ -552,13 +554,13 @@ open class TenClock : UIControl{
         switch(layer){
         case headLayer:
             if (shouldMoveHead) {
-            pointMover = pointerMoverProducer({ _ in self.headAngle}, {self.headAngle += $0; self.tailAngle += 0})
+                pointMover = pointerMoverProducer({ _ in self.headAngle}, {self.headAngle += $0; self.tailAngle += 0})
             } else {
                 pointMover = nil
             }
         case tailLayer:
             if (shouldMoveHead) {
-            pointMover = pointerMoverProducer({_ in self.tailAngle}, {self.headAngle += 0;self.tailAngle += $0})
+                pointMover = pointerMoverProducer({_ in self.tailAngle}, {self.headAngle += 0;self.tailAngle += $0})
                 } else {
                     pointMover = nil
             }
@@ -588,6 +590,9 @@ open class TenClock : UIControl{
     }
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         pointMover = nil
+        if abs(self.headAngle - self.tailAngle) < CGFloat(2 * M_PI / 12.0) {
+            return
+        }
 //        while var superview = self.superview{
 //            guard let superview = superview as? UIScrollView else {  continue }
 //            superview.scrollEnabled = true
@@ -602,6 +607,9 @@ open class TenClock : UIControl{
 //        print(touch.locationInView(self))
         pointMover(touch.location(in: self))
         
+        if abs(self.headAngle - self.tailAngle) < CGFloat(2 * M_PI / 12.0) {
+            return
+        }
     	delegate?.timesUpdated?(self, startDate: self.startDate, endDate: endDate)
         
 
