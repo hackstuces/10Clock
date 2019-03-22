@@ -211,7 +211,7 @@ open class TenClock : UIControl{
     // input an angle, output: 0 to 4pi
     func angleToTime(_ angle: Angle) -> Date{
         let dAngle = Double(angle)
-        let min = CGFloat(((M_PI - dAngle) / (2 * M_PI)) * (12 * 60))
+        let min = CGFloat(((M_PI_2 - dAngle) / (2 * M_PI)) * (12 * 60))
         let startOfToday = Calendar.current.startOfDay(for: Date())
         return self.calendar.date(byAdding: .minute, value: Int(medStepFunction(min, stepSize: 5/* minute steps*/)), to: startOfToday)!
     }
