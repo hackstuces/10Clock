@@ -99,6 +99,7 @@ open class TenClock : UIControl{
     open var shouldHaveGradient = true
     open var centerTextFont:UIFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
     open var numeralsTextFont:UIFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
+    open var cardinalsTextFont:UIFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
     
     open var numeralsColor:UIColor? = UIColor.darkGray
     open var cardinalsColor: UIColor? = UIColor.darkGray
@@ -371,14 +372,14 @@ open class TenClock : UIControl{
     func updateWatchFaceNumerals() {
         numeralsLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
       //  let f = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
-        let cgFont = CTFontCreateWithName(numeralsTextFont.fontName as CFString?, numeralsTextFont.pointSize/2,nil)
         let startPos = CGPoint(x: numeralsLayer.bounds.midX, y: 15)
         let origin = numeralsLayer.center
         let step = (2 * M_PI) / 12
         for i in (1 ... 12){
+            let cgFont = (i == 12 || i == 3 || i == 6 || i == 9) ? CTFontCreateWithName(cardinalsTextFont.fontName as CFString?, cardinalsTextFont.pointSize/2,nil) : CTFontCreateWithName(numeralsTextFont.fontName as CFString?, numeralsTextFont.pointSize/2,nil)
             let l = CATextLayer()
-            l.bounds.size = CGSize(width: i > 9 ? 18 : 8, height: 15)
-            l.fontSize = (i == 12 || i == 3 || i == 6 || i == 9) ?  numeralsTextFont.pointSize + 2 : numeralsTextFont.pointSize
+            l.bounds.size = CGSize(width: i > 9 ? 18 : 8, height: (i == 12 || i == 3 || i == 6 || i == 9) ? 17 : 15)
+            l.fontSize = (i == 12 || i == 3 || i == 6 || i == 9) ? cardinalsTextFont.pointSize : numeralsTextFont.pointSize
             l.alignmentMode = kCAAlignmentCenter
             l.contentsScale = UIScreen.main.scale
             //            l.foregroundColor
