@@ -18,7 +18,7 @@ class ViewController: UITableViewController, TenClockDelegate {
         case 1:
             self.view.tintColor = UIColor(colorLiteralRed: 0, green: 0.7, blue: 0, alpha: 1)
         case 2:
-            self.view.tintColor = .purple
+            self.view.tintColor = UIColor.init(red: 0.48, green: 0.44, blue: 0.65, alpha: 1.0)
         default:()
         }
         
@@ -96,11 +96,14 @@ class ViewController: UITableViewController, TenClockDelegate {
         clock.shouldShowTicks = false
         clock.shouldHaveGradient = false
         clock.pathWidth = 30.0
-        let tailImage = UIImageView.init(image: UIImage.init(named: "btnMoon"))
-        tailImage.frame = CGRect(x: 0, y: 0, width: 81, height: 81)
-        clock.tintColor = UIColor.init(red: 0.48, green: 0.44, blue: 0.65, alpha: 1.0)
-        clock.setTopTailImage(image: tailImage)
-        clock.setTopHeadImage(image: tailImage)
+        clock.centerTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+        clock.numeralsTextFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
+        clock.cardinalsColor = UIColor.green
+//        let tailImage = UIImageView.init(image: UIImage.init(named: "btnMoon"))
+//        tailImage.frame = CGRect(x: 0, y: 0, width: 81, height: 81)
+//        clock.tintColor = UIColor.init(red: 0.48, green: 0.44, blue: 0.65, alpha: 1.0)
+//        clock.setTopTailImage(image: tailImage)
+//        clock.setTopHeadImage(image: tailImage)
         clock.update()
         clock.delegate = self
     }

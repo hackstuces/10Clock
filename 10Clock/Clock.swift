@@ -97,8 +97,11 @@ open class TenClock : UIControl{
     open var shouldMoveOnlyDuration = false
     open var shouldShowTicks = true
     open var shouldHaveGradient = true
+    open var centerTextFont:UIFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
+    open var numeralsTextFont:UIFont = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
     
     open var numeralsColor:UIColor? = UIColor.darkGray
+    open var cardinalsColor: UIColor? = UIColor.darkGray
     open var minorTicksColor:UIColor? = UIColor.lightGray
     open var majorTicksColor:UIColor? = UIColor.blue
     open var centerTextColor:UIColor? = UIColor.darkGray
@@ -366,31 +369,30 @@ open class TenClock : UIControl{
 
     func updateWatchFaceNumerals() {
         numeralsLayer.sublayers?.forEach({$0.removeFromSuperlayer()})
-        let f = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
-        let cgFont = CTFontCreateWithName(f.fontName as CFString?, f.pointSize/2,nil)
+      //  let f = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
+        let cgFont = CTFontCreateWithName(numeralsTextFont.fontName as CFString?, numeralsTextFont.pointSize/2,nil)
         let startPos = CGPoint(x: numeralsLayer.bounds.midX, y: 15)
         let origin = numeralsLayer.center
         let step = (2 * M_PI) / 12
         for i in (1 ... 12){
             let l = CATextLayer()
             l.bounds.size = CGSize(width: i > 9 ? 18 : 8, height: 15)
-            l.fontSize = f.pointSize
+            l.fontSize = (i == 12 || i == 3 || i == 6 || i == 9) ?  numeralsTextFont.pointSize + 2 : numeralsTextFont.pointSize
             l.alignmentMode = kCAAlignmentCenter
             l.contentsScale = UIScreen.main.scale
             //            l.foregroundColor
             l.font = cgFont
             l.string = "\(i)"
-            l.foregroundColor = disabledFormattedColor(numeralsColor ?? tintColor).cgColor
+            l.foregroundColor = (i == 12 || i == 3 || i == 6 || i == 9) ? disabledFormattedColor(cardinalsColor ?? tintColor).cgColor : disabledFormattedColor(numeralsColor ?? tintColor).cgColor
             l.position = CGVector(from:origin, to:startPos).rotate( CGFloat(Double(i) * step)).add(origin.vector).point.checked
             numeralsLayer.addSublayer(l)
         }
     }
     func updateWatchFaceTitle(){
-        let f = UIFont.preferredFont(forTextStyle: UIFontTextStyle.title1)
-        let cgFont = CTFontCreateWithName(f.fontName as CFString?, f.pointSize/2,nil)
+        let cgFont = CTFontCreateWithName(centerTextFont.fontName as CFString?, centerTextFont.pointSize/2,nil)
 //        let titleTextLayer = CATextLayer()
         titleTextLayer.bounds.size = CGSize( width: titleTextInset.size.width, height: 50)
-        titleTextLayer.fontSize = f.pointSize
+        titleTextLayer.fontSize = centerTextFont.pointSize
         titleTextLayer.alignmentMode = kCAAlignmentCenter
         titleTextLayer.foregroundColor = disabledFormattedColor(centerTextColor ?? tintColor).cgColor
         titleTextLayer.contentsScale = UIScreen.main.scale
