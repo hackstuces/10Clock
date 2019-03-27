@@ -72,21 +72,21 @@ open class TenClock : UIControl{
     let fourPi =  CGFloat(4 * M_PI)
     var headAngle: CGFloat = 0{
         didSet{
-            if (headAngle > twoPi  +  CGFloat(M_PI_2)){
-                headAngle -= twoPi
+            if (headAngle > fourPi  +  CGFloat(M_PI_2)){
+                headAngle -= fourPi
             }
             if (headAngle <  CGFloat(M_PI_2) ){
-                headAngle += twoPi
+                headAngle += fourPi
             }
         }
     }
 
     var tailAngle: CGFloat = 0.7 * CGFloat(M_PI) {
         didSet{
-            if (tailAngle  > headAngle + twoPi){
-                tailAngle -= twoPi
+            if (tailAngle  > headAngle + fourPi){
+                tailAngle -= fourPi
             } else if (tailAngle  < headAngle ){
-                tailAngle += twoPi
+                tailAngle += fourPi
             }
 
         }
