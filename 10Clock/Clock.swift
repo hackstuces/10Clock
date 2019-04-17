@@ -44,6 +44,7 @@ open class TenClock : UIControl{
     let tailLayer = CAShapeLayer()
     let topHeadLayer = CAShapeLayer()
     let topTailLayer = CAShapeLayer()
+    let lockLayer = CAShapeLayer()
     let numeralsLayer = CALayer()
     let titleTextLayer = CATextLayer()
     let overallPathLayer = CALayer()
@@ -249,6 +250,7 @@ open class TenClock : UIControl{
         updateWatchFaceTicks()
         updateWatchFaceNumerals()
         updateWatchFaceTitle()
+        updateLockLayer()
         CATransaction.commit()
     }
     
@@ -353,6 +355,19 @@ open class TenClock : UIControl{
         }
     }
     
+    func updateLockLayer() {
+        if shouldMoveOnlyDuration {
+            lockLayer.isHidden = false
+            let image = UIImageView.init(image: UIImage.init(named: "Lock"))
+            lockLayer.position = CGPoint(x: gradientLayer.center.x, y: titleTextLayer.frame.minY - image.bounds.height)
+            lockLayer.backgroundColor = UIColor.clear.cgColor
+            lockLayer.bounds = CGRect(x: 0, y: 0, width: image.bounds.width, height: image.bounds.height)
+            lockLayer.contents = image.image!.cgImage
+        } else {
+            lockLayer.isHidden = true
+        }
+    }
+    
     public func setTopTailImage(image: UIImageView) {
         imageTailLayer = CALayer()
         imageTailLayer!.backgroundColor = UIColor.clear.cgColor
@@ -426,8 +441,9 @@ open class TenClock : UIControl{
         
         titleTextLayer.string = String.init(format: "%dh%02d", Int(hours), Int(minutes))
         titleTextLayer.position = gradientLayer.center
-
     }
+    
+    
     func tick() -> CAShapeLayer{
         let tick = CAShapeLayer()
         let path = UIBezierPath()
@@ -477,6 +493,7 @@ open class TenClock : UIControl{
         layer.addSublayer(gradientLayer)
         layer.addSublayer(topHeadLayer)
         layer.addSublayer(topTailLayer)
+        layer.addSublayer(lockLayer)
         update()
         strokeColor = disabledFormattedColor(tintColor)
     }
