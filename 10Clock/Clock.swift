@@ -401,19 +401,28 @@ open class TenClock : UIControl{
         titleTextLayer.font = cgFont
         //var computedTailAngle = tailAngle //+ (headAngle > tailAngle ? twoPi : 0)
         //computedTailAngle +=  (headAngle > computedTailAngle ? twoPi : 0)
-        var fiveMinIncrements = Int( ((tailAngle - headAngle) / twoPi) * 12 /*hrs*/ * 12 /*5min increments*/)
-        if fiveMinIncrements < 0 {
-            print("tenClock:Err: is negative")
-            fiveMinIncrements += (24 * (60/5))
-        }
+//        var fiveMinIncrements = Int( ((tailAngle - headAngle) / twoPi) * 12 /*hrs*/ * 12 /*5min increments*/)
+//        if fiveMinIncrements < 0 {
+//            print("tenClock:Err: is negative")
+//            fiveMinIncrements += (24 * (60/5))
+//        }
+//
+//        var hours = fiveMinIncrements / 12
+//        var minutes = ((fiveMinIncrements % 12) * 5) + 5
+//
+//        if minutes >= 60 {
+//            hours += 1
+//            minutes = 0
+//        }
+//
         
-        var hours = fiveMinIncrements / 12
-        var minutes = ((fiveMinIncrements % 12) * 5) + 5
+        let delta = endDate.timeIntervalSince(self.startDate)
+        let finalDate = Date.init(timeIntervalSince1970: delta)
+        var calendar = Calendar.current
+        calendar.timeZone = TimeZone.init(abbreviation: "UTC")!
         
-        if minutes >= 60 {
-            hours += 1
-            minutes = 0
-        }
+        let hours = Double(calendar.component(.hour, from: finalDate as Date))
+        let minutes = Double(calendar.component(.minute, from: finalDate as Date))
         
         titleTextLayer.string = String.init(format: "%dh%02d", hours, minutes)
         titleTextLayer.position = gradientLayer.center
