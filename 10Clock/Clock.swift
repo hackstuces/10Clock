@@ -424,7 +424,7 @@ open class TenClock : UIControl{
         let hours = Double(calendar.component(.hour, from: finalDate as Date))
         let minutes = Double(calendar.component(.minute, from: finalDate as Date))
         
-        titleTextLayer.string = String.init(format: "%dh%02d", hours, minutes)
+        titleTextLayer.string = String.init(format: "%dh%02d", Int(hours), Int(minutes))
         titleTextLayer.position = gradientLayer.center
 
     }
