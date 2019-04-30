@@ -300,7 +300,7 @@ open class TenClock : UIControl{
 
     func tlabel(_ str:String, color:UIColor? = nil) -> CATextLayer{
         let f = UIFont.preferredFont(forTextStyle: UIFontTextStyle.caption2)
-        let cgFont = CTFontCreateWithName(f.fontName as CFString?, f.pointSize/2,nil)
+        let cgFont = CTFontCreateWithName(f.fontName as CFString? ?? "" as CFString, f.pointSize/2,nil)
         let l = CATextLayer()
         l.bounds.size = CGSize(width: 30, height: 15)
         l.fontSize = f.pointSize
@@ -391,7 +391,7 @@ open class TenClock : UIControl{
         let origin = numeralsLayer.center
         let step = (2 * M_PI) / 12
         for i in (1 ... 12){
-            let cgFont = (i == 12 || i == 3 || i == 6 || i == 9) ? CTFontCreateWithName(cardinalsTextFont.fontName as CFString?, cardinalsTextFont.pointSize/2,nil) : CTFontCreateWithName(numeralsTextFont.fontName as CFString?, numeralsTextFont.pointSize/2,nil)
+            let cgFont = (i == 12 || i == 3 || i == 6 || i == 9) ? CTFontCreateWithName(cardinalsTextFont.fontName as CFString? ?? "" as CFString, cardinalsTextFont.pointSize/2,nil) : CTFontCreateWithName(numeralsTextFont.fontName as CFString? ?? "" as CFString, numeralsTextFont.pointSize/2,nil)
             let l = CATextLayer()
             l.bounds.size = (i == 12 || i == 3 || i == 6 || i == 9) ? CGSize(width: i > 9 ? 20 : 18, height: 18) : CGSize(width: i > 9 ? 18 : 8, height: 15)
             l.fontSize = (i == 12 || i == 3 || i == 6 || i == 9) ? cardinalsTextFont.pointSize : numeralsTextFont.pointSize
@@ -406,7 +406,7 @@ open class TenClock : UIControl{
         }
     }
     func updateWatchFaceTitle(){
-        let cgFont = CTFontCreateWithName(centerTextFont.fontName as CFString?, centerTextFont.pointSize/2,nil)
+        let cgFont = CTFontCreateWithName(centerTextFont.fontName as CFString? ?? "" as CFString, centerTextFont.pointSize/2,nil)
 //        let titleTextLayer = CATextLayer()
         titleTextLayer.bounds.size = CGSize( width: titleTextInset.size.width, height: 50)
         titleTextLayer.fontSize = centerTextFont.pointSize

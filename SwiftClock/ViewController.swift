@@ -16,7 +16,7 @@ class ViewController: UITableViewController, TenClockDelegate {
         case 0:
             self.view.tintColor =  UIButton(type: .system).titleColor(for: .normal)!
         case 1:
-            self.view.tintColor = UIColor(colorLiteralRed: 0, green: 0.7, blue: 0, alpha: 1)
+            self.view.tintColor = UIColor.init(red: 0, green: 0.7, blue: 0, alpha: 1)
         case 2:
             self.view.tintColor = UIColor.init(red: 0.48, green: 0.44, blue: 0.65, alpha: 1.0)
         default:()
